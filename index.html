@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>mapa zelene</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='/routing/mapbox-gl.js'></script>
+    <link href='https://routing.epsilon.sk/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+
+var simple = {
+  "version": 8,
+  "sources": {
+      "osm": {
+          "type": "vector",
+          "tiles": ["https://epsilon.sk/mapa-zelene/mvt.php?tile={z}/{x}/{y}"]
+      },
+      "simple-tiles": {
+              "type": "raster",
+              "tiles": ["https://tiles.epsilon.sk/T/{z}/{x}/{y}.jpeg"],
+              "tileSize": 256
+      }
+   },
+   "glyphs": "https://tiles.epsilon.sk/fonts/{fontstack}/{range}.pbf",
+   "layers": [
+      {
+            "id": "simple-tiles",
+            "type": "raster",
+            "source": "simple-tiles",
+            "minzoom": 6,
+            "maxzoom": 16, "paint" : {"raster-opacity": 0.4}
+      }
+// https://www.mapbox.com/mapbox-gl-js/style-spec#expressions
+
+  , { "id": "park", "type": "fill", "source": "osm", "source-layer": "parks",
+    "paint": { "fill-color": [ "case", [ "==", ["get", "landuse"], "grass"], "palegreen", [ "==", ["get", "landuse"], "park"], "darkgreen", "limegreen" ], 
+    "fill-opacity": 0.5 } }
+
+  , { "id": "red2", "type": "symbol", "source": "osm", "source-layer": "parks",
+      "layout": { "text-field": [ "format", ["get", "name"], {"text-size": 11, "text-font": ["literal", ["Metropolis Black"]]  } ] },
+  }
+
+  , { "id": "green", "type": "circle", "source": "osm", "source-layer": "entrances",
+      "paint": { "circle-color": "blue", "circle-radius": 2 }
+  }
+
+ ]
+};
+
+var map = new mapboxgl.Map({
+    container: "map",
+    style: simple,
+    zoom: 14, center: [17.1180, 48.1451]
+});
+var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+    });
+
+map.on('click', 'park', function(e) {
+ map.getCanvas().style.cursor = 'pointer';
+ new mapboxgl.Popup()
+  .setLngLat(e.lngLat)
+  .setHTML((typeof e.features[0].properties.name ==='string'?e.features[0].properties.name:e.features[0].properties.landuse)+', plocha '+e.features[0].properties.plocha)
+  .addTo(map);
+ });
+
+map.addControl(new mapboxgl.NavigationControl());
+</script>
+
+</body>
+</html>
