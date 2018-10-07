@@ -19,8 +19,10 @@ $q1 = "select st_asmvt(q, 'entrances', 4096, 'geom') as mvt from
 
 $q2 = "select st_asmvt(q, 'parks', 4096, 'geom') as mvt from
   (select st_AsMvtGeom($way, BBox($tile), 4096, 256, true) as geom, name, landuse, plocha from parks where $way && BBox($tile) limit $l) as q";
+$q3 = "select st_asmvt(q, 'trees', 4096, 'geom') as mvt from
+  (select st_AsMvtGeom($way, BBox($tile), 4096, 256, true) as geom, name from parks_trees where $way && BBox($tile) limit $l) as q";
 
-$q = "$q1 union $q2";
+$q = "$q1 union $q2 union $q3";
 //$q = $q2;
 $res = pg_query($q); $out = '';
 //if(strlen($r['mvt']) < 10) { header("HTTP/1.1 404"); header("Access-Control-Allow-Origin: *"); echo pg_last_error(); die(); }

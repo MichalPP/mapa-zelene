@@ -17,3 +17,7 @@ where l.highway is not null and st_intersects(l.way, parks.way)
 ;
 
 
+drop table if exists parks_trees;
+create table www.parks_trees as
+select osm_id, name, way from fresh_osm_point where "natural"='tree';
+

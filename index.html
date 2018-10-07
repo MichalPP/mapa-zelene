@@ -56,10 +56,12 @@ var simple = {
       "layout": { "text-field": [ "format", ["get", "name"], {"text-size": 9, "text-font": ["literal", ["Metropolis Black"]]  } ] },
   }
 
-  , { "id": "green", "type": "circle", "source": "osm", "source-layer": "entrances",
+  , { "id": "entrances", "type": "circle", "source": "osm", "source-layer": "entrances",
       "paint": { "circle-color": "blue", "circle-radius": 2 }
   }
-
+  , { "id": "trees", "type": "circle", "source": "osm", "source-layer": "trees",
+      "paint": { "circle-color": "green", "circle-radius": 4 }
+  }
  ]
 };
 
