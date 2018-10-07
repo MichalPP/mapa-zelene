@@ -24,20 +24,28 @@ var simple = {
           "tiles": ["https://epsilon.sk/mapa-zelene/mvt.php?tile={z}/{x}/{y}"]
       },
       "simple-tiles": {
-              "type": "raster",
-              "tiles": ["https://tiles.epsilon.sk/T/{z}/{x}/{y}.jpeg"],
-              "tileSize": 256
-      }
+          "type": "raster",
+          "tiles": ["https://tiles.epsilon.sk/T/{z}/{x}/{y}.jpeg"],
+          "tileSize": 256
+      },
+     "orto": {
+          "type": "raster",
+          "tiles": ["https://tiles.epsilon.sk/O/{z}/{x}/{y}.jpg"],
+          "tileSize": 256
+      },
+
    },
    "glyphs": "https://tiles.epsilon.sk/fonts/{fontstack}/{range}.pbf",
    "layers": [
       {
-            "id": "simple-tiles",
-            "type": "raster",
-            "source": "simple-tiles",
-            "minzoom": 6,
-            "maxzoom": 16, "paint" : {"raster-opacity": 0.4}
+         "id": "simple-tiles", "type": "raster", "source": "simple-tiles",
+         "minzoom": 6, "maxzoom": 16, "paint" : {"raster-opacity": 0.3}
       }
+,     {
+         "id": "orto", "type": "raster", "source": "orto",
+         "minzoom": 6, "maxzoom": 18, "paint" : {"raster-opacity": 0.4}
+      }
+
 // https://www.mapbox.com/mapbox-gl-js/style-spec#expressions
 
   , { "id": "park", "type": "fill", "source": "osm", "source-layer": "parks",
@@ -45,7 +53,7 @@ var simple = {
     "fill-opacity": 0.5 } }
 
   , { "id": "red2", "type": "symbol", "source": "osm", "source-layer": "parks",
-      "layout": { "text-field": [ "format", ["get", "name"], {"text-size": 11, "text-font": ["literal", ["Metropolis Black"]]  } ] },
+      "layout": { "text-field": [ "format", ["get", "name"], {"text-size": 9, "text-font": ["literal", ["Metropolis Black"]]  } ] },
   }
 
   , { "id": "green", "type": "circle", "source": "osm", "source-layer": "entrances",
