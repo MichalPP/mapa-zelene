@@ -20,7 +20,7 @@ $q1 = "select st_asmvt(q, 'entrances', 4096, 'geom') as mvt from
 $q2 = "select st_asmvt(q, 'parks', 4096, 'geom') as mvt from
   (select st_AsMvtGeom($way, BBox($tile), 4096, 256, true) as geom, name, landuse, plocha from parks where $way && BBox($tile) limit $l) as q";
 $q3 = "select st_asmvt(q, 'trees', 4096, 'geom') as mvt from
-  (select st_AsMvtGeom($way, BBox($tile), 4096, 256, true) as geom, name from parks_trees where $way && BBox($tile) limit $l) as q";
+  (select st_AsMvtGeom($way, BBox($tile), 4096, 256, true) as geom, name, typ, description from parks_trees where $way && BBox($tile) limit $l) as q";
 
 $q = "$q1 union $q2 union $q3";
 //$q = $q2;

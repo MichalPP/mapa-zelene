@@ -56,11 +56,11 @@ var simple = {
       "layout": { "text-field": [ "format", ["get", "name"], {"text-size": 9, "text-font": ["literal", ["Metropolis Black"]]  } ] },
   }
 
-  , { "id": "entrances", "type": "circle", "source": "osm", "source-layer": "entrances",
+  , { "id": "entrances", "type": "circle", "source": "osm", "source-layer": "entrances", 
       "paint": { "circle-color": "blue", "circle-radius": 2 }
   }
   , { "id": "trees", "type": "circle", "source": "osm", "source-layer": "trees",
-      "paint": { "circle-color": "green", "circle-radius": 4 }
+      "paint": { "circle-color": "green", "circle-radius": [ "case", ["==", ["get", "typ"], "chraneny"], 5, 3] }
   }
  ]
 };
@@ -82,6 +82,21 @@ map.on('click', 'park', function(e) {
   .setHTML((typeof e.features[0].properties.name ==='string'?e.features[0].properties.name:e.features[0].properties.landuse)+', plocha '+e.features[0].properties.plocha)
   .addTo(map);
  });
+
+map.on('click', 'trees', function(e) {
+ map.getCanvas().style.cursor = 'pointer';
+ new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.description).addTo(map);
+ });
+
+map.on('mouseenter', 'trees', function(e) {
+ map.getCanvas().style.cursor = 'pointer';
+ popup.setLngLat(e.lngLat).setHTML(e.features[0].properties.description).addTo(map);
+ });
+map.on('mouseleave', 'trees', function() {
+ map.getCanvas().style.cursor = '';
+ popup.remove();
+ });
+
 
 map.addControl(new mapboxgl.NavigationControl());
 </script>

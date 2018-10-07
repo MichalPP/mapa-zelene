@@ -18,6 +18,7 @@ where l.highway is not null and st_intersects(l.way, parks.way)
 
 
 drop table if exists parks_trees;
-create table www.parks_trees as
-select osm_id, name, way from fresh_osm_point where "natural"='tree';
+-- create table www.parks_trees as select osm_id, name, way from fresh_osm_point where "natural"='tree';
+
+create table www.parks_trees as select osm_id, name, case when typy && '{chraneny-strom}' then 'chraneny' else 'strom' end as typ, case when name not like '%strom' then name ||' ' else '' end || popis_maly || ', <a href="https://poi.oma.sk/'||t||osm_id||'">viac</a>' as description, geometry(way) as way from poi where typy && '{strom}';
 
